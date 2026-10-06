@@ -1,0 +1,69 @@
+﻿:root {
+  font-family: 'Segoe UI Variable Text', 'Segoe UI', Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #637087;
+  background: #f3f5f9;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  font-variant-numeric: tabular-nums;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+a {
+  color: #5655cf;
+  text-decoration: none;
+}
+h1,
+h2,
+p {
+  margin: 0;
+}
+h1,
+h2 {
+  color: #202c40;
+}
+h1 {
+  font-size: clamp(22px, 2.3vw, 30px);
+}
+h2 {
+  font-size: 17px;
+}
+.page {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 24px;
+  background: white;
+  border: 1px solid #e4e9f1;
+  border-radius: 16px;
+  display: grid;
+  gap: 20px;
+}
+.toolbar {
+  display: flex;
+  gap: 12px;
+}
+.toolbar > .ant-select {
+  min-width: 170px;
+}
+.page .ant-form {
+  max-width: 480px;
+  width: 100%;
+}
+:focus-visible {
+  outline: 2px solid #5655cf;
+  outline-offset: 3px;
+}
+@media (max-width: 700px) {
+  .page {
+    margin: 8px;
+    padding: 14px;
+  }
+  .toolbar {
+    flex-direction: column;
+  }
+}

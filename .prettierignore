@@ -1,0 +1,6 @@
+node_modules
+dist
+oldFiles
+.migration-backup
+package-lock.json
+.env.local
