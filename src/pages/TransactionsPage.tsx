@@ -5,6 +5,7 @@ import { useTransactions } from '../features/transactions/queries'
 import type { Transaction } from '../features/transactions/model'
 import { Money, formatMoney } from '../shared/lib/money'
 import { QueryFeedback } from '../shared/ui/QueryFeedback'
+import { EmptyState } from '../shared/ui/EmptyState'
 
 export default function TransactionsPage() {
   const query = useTransactions()
@@ -82,6 +83,23 @@ export default function TransactionsPage() {
         columns={columns}
         dataSource={items}
         loading={query.isPending}
+        locale={{
+          emptyText:
+            query.isPending || query.error ? null : (
+              <EmptyState
+                title={
+                  query.data?.length
+                    ? 'Нічого не знайдено'
+                    : 'Транзакцій поки немає'
+                }
+                description={
+                  query.data?.length
+                    ? 'Спробуйте змінити пошук або фільтри.'
+                    : 'Оновіть дані або поверніться пізніше.'
+                }
+              />
+            ),
+        }}
         scroll={{ x: 650 }}
         pagination={{
           current: Math.min(page, Math.max(1, Math.ceil(items.length / 10))),

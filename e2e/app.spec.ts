@@ -48,3 +48,14 @@ test('малий екран має доступні панелі без зага
     horizontal: document.documentElement.scrollWidth <= window.innerWidth,
   }))).toEqual({ vertical: true, horizontal: true })
 })
+
+test('empty transactions and unmatched search show distinct empty states', async ({ page }) => {
+  await page.goto('/transactions?search=not-a-transaction')
+  await expect(page.getByRole('status')).toContainText('Нічого не знайдено')
+  await expect(page.getByRole('status')).toContainText('Спробуйте змінити пошук або фільтри.')
+  await page.route('**/api/finance1', route => route.fulfill({ json: { transactions: [] } }))
+  await page.route('**/api/finance2', route => route.fulfill({ json: [] }))
+  await page.goto('/transactions')
+  await expect(page.getByRole('status')).toContainText('Транзакцій поки немає')
+  await expect(page.getByRole('status')).toContainText('Оновіть дані або поверніться пізніше.')
+})
