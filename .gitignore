@@ -11,6 +11,7 @@ node_modules
 .migration-backup/
 test-results/
 playwright-report/
+reports/api-audit/
 dist
 dist-ssr
 *.local
