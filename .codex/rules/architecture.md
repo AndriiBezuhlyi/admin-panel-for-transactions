@@ -1,18 +1,30 @@
 ﻿# Architecture
 
-- `src/app`: application providers, query client, router, and shared layout.
-- `src/pages`: route screens composing feature modules; pages are loaded lazily by `src/app/router.tsx`.
-- `src/features/transactions`: transaction model, validation, queries, financial aggregation, and transaction UI.
-- `src/features/exchange-rates`: rate validation, queries, and currency-rate UI.
-- `src/shared/api`: HTTP client and safe application errors.
-- `src/shared/lib`: reusable non-React utilities such as the configured decimal implementation.
-- `src/shared/ui`: small UI elements shared across features.
-- `src/test`, colocated `*.test.ts(x)`, and `e2e`: test infrastructure and cases.
+- `src/app`: application providers, router, query client, and shared layout.
+- `src/pages`: route-level screens that compose features.
+- `src/features/transactions`: transaction domain logic, validation, queries, aggregation, and UI.
+- `src/features/exchange-rates`: exchange-rate logic, validation, queries, and UI.
+- `src/shared/api`: shared HTTP client and safe application errors.
+- `src/shared/lib`: reusable domain-agnostic utilities.
+- `src/shared/ui`: reusable UI shared across features.
 
-Keep providers and routing at the application boundary. Pages compose features; feature modules own their domain behavior. Shared code must not import pages or feature-specific code. Avoid circular imports and abstractions without real consumers.
+## Boundaries
 
-Preserve existing working boundaries during focused changes. If a dependency between features becomes problematic, propose or perform only the extraction needed by the authorized task. Do not restructure the entire project to satisfy an abstract architecture pattern.
+- Keep providers and routing in the application layer.
+- Pages compose features and should not own substantial domain logic.
+- Features own their domain-specific logic, data access, validation, and UI.
+- Shared modules must remain domain-agnostic.
+- `shared` must not import from `pages` or feature-specific modules.
+- Avoid circular dependencies.
 
-Prefer established dependencies and platform APIs. Keep TypeScript strict, npm, Vite, and the current styling approach. Major changes outside the authorized scope require approval; do not request it again for changes already explicitly approved.
+## Shared Code
 
-Maintain route error and loading fallbacks. Adding a page does not require a new state manager or a framework migration. Production hosting must support an `index.html` fallback for browser routes and direct detail links.
+- Move code to `shared` only when it has a real cross-feature use case.
+- Do not create shared abstractions for a single consumer.
+- If features need common domain-independent behavior, extract only the part that is genuinely shared.
+
+## Routing and State
+
+- Keep route definitions in the application layer.
+- Preserve direct navigation and reload support for application routes.
+- Prefer existing server state, URL state, and local component state before introducing another global state solution.

@@ -2,28 +2,58 @@
 
 ## Transaction Inclusion
 
-Preserve all normalized transactions for display. Include a transaction in totals only when its resolved status is `paid` or absent. Status resolution currently uses `status ?? type ?? null`; pending, rejected, and other explicit statuses are excluded.
+Preserve all normalized transactions for display. Include a transaction in totals only when its resolved status is `paid` or absent.
 
-Normalize currency codes to uppercase. Transaction IDs formed from source and index are temporary view identifiers; never use them as accounting references or mutation identifiers.
+Status resolution:
+`status ?? type ?? null`
+
+Exclude `pending`, `rejected`, and other explicit non-paid statuses.
+
+Normalize currency codes to uppercase.
 
 ## Precision and Conversion
 
-Store amounts and rates as decimal strings. Use `Money` from `src/shared/lib/money.ts`, the configured `decimal.js` clone with 40 significant digits and `ROUND_HALF_UP`. Do not use JavaScript Number arithmetic, `parseFloat`, or Number-based rounding for money. A number already rounded by an upstream JSON producer cannot be repaired by converting it to a string.
+Store monetary amounts and rates as decimal strings.
 
-The main summary always uses USD. CurrencyFreaks rates mean units of currency per 1 USD:
+Use `Money` from `src/shared/lib/money.ts`, the configured `decimal.js` clone with 40 significant digits and `ROUND_HALF_UP`.
 
-- To USD: `amount / sourceRate`.
-- Between currencies: `amount / sourceRate * targetRate`.
-- USD has rate 1. Equal source and target currencies need no conversion.
+Do not use JavaScript `Number`, `parseFloat`, or Number-based rounding for monetary calculations. Precision already lost upstream cannot be recovered by converting a number to a string.
 
-Required rates must be present, finite, and positive. Fail clearly rather than silently ignoring a transaction or substituting a guessed rate.
+The main summary uses USD.
 
-For the report summary, keep intermediate decimal precision and round only the final total to two decimal places. Separate USD/EUR totals sum included transactions in their original currencies, without conversion. The converter rounds its final preview result to two places.
+CurrencyFreaks rates represent currency units per 1 USD:
 
-These are current display/report rules, not universal currency minor-unit rules or accounting settlement rules. If future operations require per-transaction rounding, other currencies' minor units, historical rates, or different policies, establish the business contract before changing behavior.
+- To USD: `amount / sourceRate`
+- Between currencies: `amount / sourceRate * targetRate`
+- USD rate: `1`
+- Equal source and target currencies require no conversion.
 
-The frontend provides preliminary equivalents. Backend must determine authoritative accounting amounts and operations. Do not change precision or rounding as cosmetic cleanup.
+Required rates must be present, finite, and positive. Fail clearly instead of skipping transactions or guessing rates.
 
-## Required Cases When This Logic Changes
+For report summaries:
 
-Cover paid/missing/excluded statuses, lowercase currencies, exact decimal sums, large string amounts, final-only rounding, empty data, multiple currencies, equal-currency conversion, and missing or invalid rates. Preserve the string-valued `{ total, currency: 'USD' }` result contract unless the task explicitly changes it.
+- keep full intermediate decimal precision;
+- round only the final total to two decimal places;
+- USD/EUR separate totals sum included transactions already denominated in that currency without conversion.
+
+The converter rounds only its final preview result to two decimal places.
+
+These are current product rules, not universal accounting or currency minor-unit rules. Do not change rounding or precision behavior without an explicit business requirement.
+
+Frontend values are preliminary equivalents; authoritative accounting amounts belong to the backend.
+
+## Required Cases
+
+When financial logic changes, cover:
+
+- paid, missing, and excluded statuses;
+- lowercase currencies;
+- exact decimal sums;
+- large string amounts;
+- final-only rounding;
+- empty data;
+- multiple currencies;
+- equal-currency conversion;
+- missing or invalid rates.
+
+Preserve the string-valued `{ total, currency: 'USD' }` result contract unless explicitly changed.

@@ -2,29 +2,65 @@
 
 ## Product
 
-Finance Panel is a transaction dashboard intended to help connected businesses inspect financial data. Current screens are overview, transactions, transaction details, exchange rates, and a currency converter. User-facing UI is Ukrainian; communicate with the user in Ukrainian. Use English for new developer documentation, comments, and identifiers; do not translate existing content as unrelated cleanup.
+Finance Panel is a transaction dashboard for connected businesses.
 
-## Established Stack
+Current screens:
 
-- React + Vite + TypeScript with strict checking.
-- React Router Data Mode, with lazy page modules.
-- TanStack Query for server state; React state and Ant Design Form for local interaction.
-- Ant Design for UI, forms, and tables; CSS Modules for layout, `src/index.css` for global styles.
-- Zod for runtime API validation; `decimal.js` for monetary calculations.
-- npm and `package-lock.json`; ESLint, Prettier, Vitest, React Testing Library, and Playwright.
+- dashboard;
+- transactions;
+- transaction details;
+- exchange rates;
+- currency converter.
 
-Use `package.json` and the lock file for actual dependency versions; do not add Next.js, Redux, Zustand, or another UI system without an approved concrete need.
+User-facing UI is Ukrainian.
 
-## Existing Routes and Layout
+## Stack
 
-`/` redirects to `/dashboard`. Other routes are `/transactions`, `/transactions/:id`, `/exchange-rates`, and `/converter`.
+- React + Vite + TypeScript.
+- React Router Data Mode with lazy page modules.
+- TanStack Query for server state.
+- React state and Ant Design Form for local interaction.
+- Ant Design + CSS Modules; global styles in `src/index.css`.
+- Zod for API validation.
+- `decimal.js` for monetary calculations.
+- Vitest + React Testing Library + Playwright.
 
-The overview puts currency rates on the left, the USD summary and separate original USD/EUR totals in the center, and all transactions on the right. Preserve its compact desktop layout and panel scrolling; keep the mobile layout usable without page-wide overflow.
+Use `package.json` and `package-lock.json` as the source of truth for dependencies and versions.
 
-## Current API Limitations
+## Routes and Layout
 
-The finance endpoints return a complete dataset without stable transaction IDs, transaction dates, authentication, mutation endpoints, or server pagination. Detail IDs currently combine source and array index, so they are not durable identifiers after response reordering.
+Routes:
 
-Do not invent missing fields, business isolation, editing capabilities, or server behavior. Current search and pagination operate locally; amount sorting compares original numbers across currencies, not converted economic value. Large datasets require backend pagination and aggregates rather than loading everything to compute totals.
+- `/dashboard`
+- `/transactions`
+- `/transactions/:id`
+- `/exchange-rates`
+- `/converter`
 
-The old project was migrated and `oldFiles` removed. Do not reintroduce it; `.migration-backup` is a local history archive, not an application dependency.
+`/` redirects to `/dashboard`.
+
+The dashboard uses a compact desktop layout with panel scrolling and must remain usable on mobile without page-wide overflow.
+
+## Current Backend Limitations
+
+Finance endpoints currently provide:
+
+- no stable transaction IDs;
+- no transaction dates;
+- no authentication or business isolation;
+- no mutation endpoints;
+- no server-side pagination.
+
+Transaction detail IDs currently use source + array index and are not stable after response reordering.
+
+Search and pagination are currently client-side.
+
+Do not assume unavailable backend fields or capabilities.
+
+For large datasets, backend pagination and aggregates will be required instead of loading the full dataset.
+
+## Migration
+
+`oldFiles` was removed after migration.
+
+`.migration-backup` is a local history archive, not an application dependency.

@@ -1,13 +1,45 @@
 ﻿# Project Security
 
-Never print or commit credentials. Do not read secret values when variable names or `.env.example` suffice. Do not modify `.env.local`, rotate credentials, or copy secret-bearing configuration unless necessary and explicitly authorized.
+## Client-Side Provider Credentials
 
-The current prototype calls external providers directly using VITE environment variables. Those variables are public in a browser bundle; `.gitignore` does not make them secret. Before public production deployment, provider credentials must be owned by a backend or approved server layer. Do not create a backend automatically during unrelated frontend work.
+The current prototype calls external providers directly using `VITE_*` environment variables.
 
-Keep logs useful but limited to safe stage names, status codes, and permitted aggregates. Do not log request headers, credential-bearing URLs, raw fetch errors, entire provider responses, or unnecessary business transaction details. Mock data is preferred for screenshots, tests, and traces.
+- Values exposed through Vite client environment variables are included in the browser bundle and must not be treated as secrets.
+- `.gitignore` does not make client-side credentials private.
+- Before public production deployment, provider credentials must be moved behind a backend or another approved server-side layer.
+- Do not introduce a backend automatically during unrelated frontend work.
 
-Render API content through React text interpolation. Do not insert untrusted HTML or introduce `dangerouslySetInnerHTML` for transaction labels.
+## Logging and Business Data
 
-Authentication and business isolation are not implemented by the current API. Do not describe the prototype as having production authorization. Future access checks must be enforced by backend; frontend filtering does not provide tenant isolation.
+- Keep logs limited to safe stage names, status codes, and permitted aggregates.
+- Do not log:
+  - request headers;
+  - credential-bearing URLs;
+  - entire provider responses;
+  - unnecessary transaction or business data.
+- Prefer mock data for tests, screenshots, traces, and debugging artifacts.
 
-Keep `.env.local`, `.migration-backup`, `test-results`, and `playwright-report` out of commits. Treat traces, screenshots, network recordings, and history archives as potentially sensitive. Do not open or copy `.migration-backup` for ordinary application tasks.
+## Rendering External Data
+
+- Render API-provided text through normal React text interpolation.
+- Do not introduce `dangerouslySetInnerHTML` for transaction labels or other untrusted external content unless the task explicitly requires trusted HTML and its sanitization strategy is approved.
+
+## Authentication and Business Isolation
+
+- Authentication and business isolation are not implemented by the current API.
+- Do not describe the prototype as having production-grade authorization or tenant isolation.
+- Frontend filtering must never be treated as a security boundary.
+- Future authorization and tenant-access checks must be enforced by the backend.
+
+## Sensitive Local Artifacts
+
+Keep the following out of commits:
+
+- `.env.local`
+- `.migration-backup`
+- `test-results`
+- `playwright-report`
+
+Treat browser traces, screenshots, network recordings, and history archives as potentially sensitive because they may contain business or transaction data.
+
+Do not inspect or copy `.migration-backup` during ordinary application tasks unless the task specifically requires it.
