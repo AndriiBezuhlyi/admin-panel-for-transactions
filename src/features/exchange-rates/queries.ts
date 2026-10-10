@@ -3,6 +3,9 @@ import { z } from 'zod'
 import { ApiError, fetchJson, requireKey } from '../../shared/api/client'
 import { Money } from '../../shared/lib/money'
 
+export const exchangeRatesEndpoint =
+  'https://api.currencyfreaks.com/v2.0/rates/latest'
+
 const schema = z.object({
   base: z.literal('USD'),
   date: z.string(),
@@ -35,7 +38,7 @@ export function useExchangeRates() {
         import.meta.env.VITE_CURRENCYFREAKS_API_KEY,
         'CurrencyFreaks',
       )
-      const url = new URL('https://api.currencyfreaks.com/v2.0/rates/latest')
+      const url = new URL(exchangeRatesEndpoint)
       url.searchParams.set('apikey', key)
       const response = await fetchJson(url, 'CurrencyFreaks', { signal })
       const result = schema.safeParse(response)

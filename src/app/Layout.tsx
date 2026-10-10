@@ -13,6 +13,7 @@ export function Layout() {
           <NavLink to="/transactions">Транзакції</NavLink>
           <NavLink to="/exchange-rates">Курси валют</NavLink>
           <NavLink to="/converter">Конвертер</NavLink>
+          <NavLink to="/data-sources">Джерела даних</NavLink>
         </nav>
       </header>
       <main className={styles.content}>

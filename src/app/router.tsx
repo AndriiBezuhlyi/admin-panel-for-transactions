@@ -42,6 +42,12 @@ export const router = createBrowserRouter([
         path: '*',
         element: <Result status="404" title="Сторінку не знайдено" />,
       },
+      {
+        path: 'data-sources',
+        lazy: async () => ({
+          Component: (await import('../pages/DataSourcesPage')).default,
+        }),
+      },
     ],
   },
 ])

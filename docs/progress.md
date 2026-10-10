@@ -1,5 +1,13 @@
 # Development Progress
 
+## 2026-10-10 — Data sources page
+
+- Added `/data-sources`, navigation, and `src/pages/DataSourcesPage.tsx` with CSS Modules. The page shows both finance sources and CurrencyFreaks, safe endpoint URLs, calculation roles, fetched-record counts, timestamps, refresh, and known limitations.
+- Reused existing query caches and extracted endpoint constants in the owning query modules. Finance status remains explicitly shared; errors are not attributed to an individual source without evidence. The finance2 casing finding is labeled as a historical audit observation; currency coverage is checked against the loaded validated rate map.
+- Added component tests and browser scenarios in `src/pages/DataSourcesPage.test.tsx` and `e2e/app.spec.ts`; updated `.codex/rules/project.md` to document the new screen and route.
+- New environment variables and dependencies: none.
+- Verification: ESLint, TypeScript/production build, three component tests, two targeted Playwright scenarios, and all 21 audit-script tests passed. Desktop (1440×1000) and mobile (390×844) screenshots were reviewed with mocked provider data; no runtime exceptions or horizontal overflow. Browser plugin was unavailable, so the existing Playwright/Edge workflow was used. Context7 authentication failed; official Ant Design documentation was consulted.
+
 ## 2026-10-10 — Canonical repository skill layout
 
 - Consolidated the complete financial audit skill and all five script/test resources under `.agents/skills/financial-api-audit/`, replacing the discovery-only entry with the full `SKILL.md`.

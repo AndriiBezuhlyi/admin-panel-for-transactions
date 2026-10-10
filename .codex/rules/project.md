@@ -11,6 +11,7 @@ Current screens:
 - transaction details;
 - exchange rates;
 - currency converter.
+- data sources, including shared fetch status, current currency-rate coverage, known limitations, and clearly labeled historical audit observations.
 
 User-facing UI is Ukrainian.
 
@@ -36,6 +37,7 @@ Routes:
 - `/transactions/:id`
 - `/exchange-rates`
 - `/converter`
+- `/data-sources`
 
 `/` redirects to `/dashboard`.
 
